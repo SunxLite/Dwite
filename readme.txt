@@ -1,2 +1,2 @@
-My Dwite contest answers.
+Dwite contest answers.
 Not the best, but it works~.
