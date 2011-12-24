@@ -3,18 +3,17 @@ import java.io.BufferedWriter;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.util.Arrays;
 
 public class Question4 {
 	private static int steps, height, width, y, x, yb, xb, yc, xc;
-	private static String[] fields;
-	private static char[][] map, clone;
+	private static String[] fields; // store temporary input etc.
+	private static char[][] map, clone; // map contains the original maze, clone is clone.
 
 	public static void main(String[] args) throws IOException {
-		BufferedReader in = new BufferedReader(new FileReader("DATA4.txt"));
-		BufferedWriter out = new BufferedWriter(new FileWriter("OUT4.txt"));
+		BufferedReader in = new BufferedReader(new FileReader("src/DATA4.txt"));
+		BufferedWriter out = new BufferedWriter(new FileWriter("src/OUT4.txt"));
 
-		for (int i = 0; i < 2; i++) { // ================ change it to 5 later!!! ===================
+		for (int i = 0; i < 5; i++) {
 			// reading in fields
 			fields = in.readLine().split(" ");
 			height = Integer.parseInt(fields[0]);
@@ -42,25 +41,25 @@ public class Question4 {
 				}
 			}
 
-			arrClone();
+			remap();
 			steps = maze('B', y, x) - 1; // -1 removes the last addition which does not count...
-			// System.out.println("step 1:" + steps);
+			//System.out.println("step 1:" + steps);
 
-			arrClone();
+			remap();
 			steps += maze('C', yb, xb) - 1;
-			// System.out.println("step 1+2:" + steps);
+			//System.out.println("step 1+2:" + steps);
 
-			arrClone();
+			remap();
 			steps += maze('A', yc, xc) - 1;
-			// System.out.println("total:" + steps);
-			
-			out.write(steps+""); //display random characters without forcing String.
+			//System.out.println("total:" + steps);
+
+			out.write(steps + ""); // display random characters without forcing String.
 			out.newLine();
 		}
 		out.close();
 	}
 
-	private static void arrClone() {
+	private static void remap() {
 		clone = new char[map.length][map[0].length];
 		for (int y = 0; y < map.length; y++) {
 			for (int x = 0; x < map[0].length; x++) {
@@ -122,6 +121,11 @@ public class Question4 {
 			if (w > 0)
 				out = Math.min(out, w);
 		}
+
+		// Make the current location available again
+		// Note: it's after recursion
+		// if (clone[y][x] == '!')
+		clone[y][x] = '.';
 
 		// return!
 		if (out != -1) {
